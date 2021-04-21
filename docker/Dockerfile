@@ -75,6 +75,11 @@ RUN /root/.local/bin/poetry export --extras all -o /synapse/requirements.txt ${T
 ###
 FROM docker.io/python:${PYTHON_VERSION}-slim as builder
 
+LABEL org.opencontainers.image.url='https://matrix.org/docs/projects/server/synapse'
+LABEL org.opencontainers.image.documentation='https://github.com/matrix-org/synapse/blob/master/docker/README.md'
+LABEL org.opencontainers.image.source='https://github.com/matrix-org/synapse.git'
+LABEL org.opencontainers.image.licenses='Apache-2.0'
+
 # install the OS build deps
 RUN \
    --mount=type=cache,target=/var/cache/apt,sharing=locked \
