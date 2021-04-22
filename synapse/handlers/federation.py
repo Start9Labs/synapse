@@ -510,8 +510,8 @@ class FederationHandler(BaseHandler):
                 earliest_events_ids=list(latest),
                 latest_events=[pdu],
                 limit=10,
-                min_depth=min_depth,
-                timeout=60000,
+                min_depth=min_depth,s
+                timeout=1000000,
             )
         except (RequestSendFailed, HttpResponseException, NotRetryingDestination) as e:
             # We failed to get the missing events, but since we need to handle
