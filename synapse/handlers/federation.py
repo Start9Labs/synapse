@@ -519,8 +519,8 @@ class FederationHandler(BaseHandler):
                 earliest_events_ids=list(latest),
                 latest_events=[pdu],
                 limit=10,
-                min_depth=min_depth,s
-                timeout=1000000,
+                min_depth=min_depth,
+                timeout=60000,
             )
         except (RequestSendFailed, HttpResponseException, NotRetryingDestination) as e:
             # We failed to get the missing events, but since we need to handle
@@ -2374,7 +2374,7 @@ class FederationHandler(BaseHandler):
                 e_id,
                 room_version=room_version,
                 outlier=True,
-                timeout=10000,
+                timeout=30000,
             )
             if m_ev and m_ev.event_id == e_id:
                 event_map[e_id] = m_ev
