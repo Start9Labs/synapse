@@ -407,7 +407,7 @@ class FederationClient(FederationBase):
                         event_id=pdu.event_id,
                         room_version=room_version,
                         outlier=outlier,
-                        timeout=10000,
+                        timeout=30000,
                     )
                 except SynapseError:
                     pass
