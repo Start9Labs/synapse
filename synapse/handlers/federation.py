@@ -1144,7 +1144,7 @@ class FederationHandler(BaseHandler):
                 e_id,
                 room_version=room_version,
                 outlier=True,
-                timeout=10000,
+                timeout=30000,
             )
             if m_ev and m_ev.event_id == e_id:
                 event_map[e_id] = m_ev

@@ -413,6 +413,7 @@ class FederationClient(FederationBase):
 
         valid_pdus = []
 
+<<<<<<< HEAD
         async def _execute(pdu: EventBase) -> None:
             valid_pdu = await self._check_sigs_and_hash_and_fetch_one(
                 pdu=pdu,
@@ -420,6 +421,20 @@ class FederationClient(FederationBase):
                 outlier=outlier,
                 room_version=room_version,
             )
+=======
+            pdu_origin = get_domain_from_id(pdu.sender)
+            if not res and pdu_origin != origin:
+                try:
+                    res = await self.get_pdu(
+                        destinations=[pdu_origin],
+                        event_id=pdu.event_id,
+                        room_version=room_version,
+                        outlier=outlier,
+                        timeout=30000,
+                    )
+                except SynapseError:
+                    pass
+>>>>>>> change all timeouts of 10s to 30s
 
             if valid_pdu:
                 valid_pdus.append(valid_pdu)
