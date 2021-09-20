@@ -14,42 +14,9 @@
 ARG PYTHON_VERSION=3.8
 
 ###
-### Stage: prebuilder
-###
-### New versions of cryptography require rust to be installed, but due to
-### https://bugs.launchpad.net/qemu/+bug/1805913 downloading cargo registries
-### and dependencies doesn't work on multiarch builds. We fix this by
-### prebuilding `cryptography` first in the native arch, and then copying over
-### the registry and running cargo in offline mode.
-###
-FROM --platform=$BUILDPLATFORM docker.io/python:${PYTHON_VERSION}-slim as prebuilder
-
-RUN apt-get update && apt-get install -y \
-        build-essential \
-        libffi-dev \
-        libssl-dev \
-        rustc \
-        zlib1g-dev \
-        && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir /root/.cargo
-ENV CARGO_HOME=/root/.cargo
-
-RUN pip download --no-binary :all: --no-deps cryptography
-
-RUN tar -xf cryptography*.tar.gz --wildcards cryptography*/src/rust/
-
-RUN cd cryptography*/src/rust && cargo fetch
-
-###
-### Stage: builder
+### Stage 0: builder
 ###
 FROM docker.io/python:${PYTHON_VERSION}-slim as builder
-
-LABEL org.opencontainers.image.url='https://matrix.org/docs/projects/server/synapse'
-LABEL org.opencontainers.image.documentation='https://github.com/matrix-org/synapse/blob/master/docker/README.md'
-LABEL org.opencontainers.image.source='https://github.com/matrix-org/synapse.git'
-LABEL org.opencontainers.image.licenses='Apache-2.0'
 
 # install the OS build deps
 RUN apt-get update && apt-get install -y \
@@ -65,14 +32,6 @@ RUN apt-get update && apt-get install -y \
     rustc \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
-
-COPY --from=prebuilder /root/.cargo /root/.cargo
-
-ENV CARGO_NET_OFFLINE=true
-ENV CARGO_HOME=/root/.cargo
-
-RUN pip install --prefix="/install" --no-warn-script-location \
-        cryptography
 
 # Copy just what we need to pip install
 COPY scripts /synapse/scripts/
@@ -97,7 +56,7 @@ COPY synapse /synapse/synapse/
 RUN pip install --prefix="/install" --no-deps --no-warn-script-location /synapse
 
 ###
-### Stage: runtime
+### Stage 1: runtime
 ###
 
 FROM docker.io/python:${PYTHON_VERSION}-slim
