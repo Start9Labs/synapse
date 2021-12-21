@@ -590,7 +590,7 @@ class FederationClient(FederationBase):
                     destinations=[pdu_origin],
                     event_id=pdu.event_id,
                     room_version=room_version,
-                    timeout=10000,
+                    timeout=30000,
                 )
             except SynapseError:
                 pass
