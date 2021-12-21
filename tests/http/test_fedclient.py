@@ -453,7 +453,7 @@ class FederationClientTests(HomeserverTestCase):
     def test_client_sends_body(self):
         defer.ensureDeferred(
             self.cl.post_json(
-                "testserv:8008", "foo/bar", timeout=10000, data={"a": "b"}
+                "testserv:8008", "foo/bar", timeout=30000, data={"a": "b"}
             )
         )
 

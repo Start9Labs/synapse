@@ -358,7 +358,7 @@ class TypingNotificationsTestCase(unittest.HomeserverTestCase):
                 target_user=U_APPLE,
                 requester=create_requester(U_APPLE),
                 room_id=ROOM_ID,
-                timeout=10000,
+                timeout=30000,
             )
         )
 
@@ -412,7 +412,7 @@ class TypingNotificationsTestCase(unittest.HomeserverTestCase):
                 target_user=U_APPLE,
                 requester=create_requester(U_APPLE),
                 room_id=ROOM_ID,
-                timeout=10000,
+                timeout=30000,
             )
         )
 

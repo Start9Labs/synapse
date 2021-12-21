@@ -268,7 +268,7 @@ class TransportLayerClient:
             path=path,
             args=args,
             retry_on_dns_fail=retry_on_dns_fail,
-            timeout=10000,
+            timeout=30000,
             ignore_backoff=ignore_backoff,
         )
 

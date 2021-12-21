@@ -871,7 +871,7 @@ class ServerKeyFetcher(BaseV2KeyFetcher):
                     # (Note that get_json may make 4 attempts, so this can still take
                     # almost 45 seconds to fetch the headers, plus up to another 60s to
                     # read the response).
-                    timeout=10000,
+                    timeout=30000,
                 )
             except (NotRetryingDestination, RequestSendFailed) as e:
                 # these both have str() representations which we can't really improve
